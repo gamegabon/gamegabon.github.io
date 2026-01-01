@@ -1,0 +1,227 @@
+/* Modernisé pour GAMEGABON
+   - Design moderne, spacing généreux, meilleures hiérarchies typographiques
+   - Buttons, cartes, grille responsive, header/nav améliorés
+   - Variables CSS pour personnalisation rapide
+   - Respect prefers-reduced-motion et prefers-color-scheme
+*/
+
+/* ========== Reset léger & box-sizing ========== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root{
+  /* Palette (modifiable) */
+  --bg: #0f1724;            /* fond sombre par défaut */
+  --surface: #0b1220;
+  --card: #0f1724;          /* cartes (sombre) */
+  --muted: #9AA4B2;
+  --text: #E6EEF8;
+  --accent: #22c55e;        /* verdoyant - modifiez pour votre identité */
+  --accent-2: #06b6d4;
+  --glass: rgba(255,255,255,0.03);
+  --danger: #ff6b6b;
+
+  /* Typographie & spacing */
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --base: 16px;
+  --radius: 12px;
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+  --max-width: 1100px;
+
+  --shadow-sm: 0 6px 18px rgba(2,6,23,0.5);
+  --glass-border: rgba(255,255,255,0.04);
+}
+
+/* Light theme override */
+@media (prefers-color-scheme: light) {
+  :root{
+    --bg: #f7f8fb;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --muted: #666d78;
+    --text: #0b1220;
+    --glass: rgba(11,18,32,0.03);
+    --shadow-sm: 0 8px 30px rgba(15,23,42,0.06);
+  }
+}
+
+/* Base */
+html { font-family: var(--font-sans); font-size: var(--base); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; background: var(--bg); color: var(--text); }
+body { margin:0; line-height:1.55; }
+
+/* Layout container */
+.container { width:100%; max-width: var(--max-width); margin: 0 auto; padding: 0 var(--space-md); }
+
+/* Header */
+.site-header {
+  background: linear-gradient(90deg, rgba(34,197,94,0.12), rgba(6,182,212,0.06));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.site-header .container {
+  display:flex; align-items:center; justify-content:space-between; gap:var(--space-md); padding: var(--space-sm) 0;
+}
+.site-header h1 { font-size:1.05rem; margin:0; letter-spacing:0.6px; font-weight:700; }
+.site-header a { color: inherit; text-decoration:none; }
+
+/* Navigation */
+nav { display:flex; align-items:center; gap:0.5rem; }
+.nav-toggle { display:none; background:transparent; border:0; color:var(--text); font-size:1.1rem; }
+
+/* Hero */
+.hero {
+  margin: var(--space-lg) 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-radius: calc(var(--radius) + 4px);
+  padding: calc(var(--space-lg)) var(--space-md);
+  display:flex; gap: var(--space-lg); align-items:center; justify-content:space-between;
+  box-shadow: var(--shadow-sm);
+}
+.hero h2 { margin:0 0 .5rem 0; font-size: clamp(1.4rem, 2vw, 2rem); color:var(--text); }
+.hero p { margin:0; color:var(--muted); font-size:1rem; }
+
+/* Buttons */
+.btn {
+  display:inline-flex; align-items:center; gap:10px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #022; font-weight:700;
+  padding: 10px 14px; border-radius: 10px; border: none; cursor:pointer;
+  text-decoration:none; transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow: 0 6px 20px rgba(16,24,40,0.12);
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(6,182,212,0.08); }
+.btn.secondary {
+  background: transparent; color: var(--text); border: 1px solid var(--glass-border);
+  box-shadow: none;
+}
+.btn.outline {
+  background: transparent; color: var(--accent); border: 1.5px solid rgba(34,197,94,0.15);
+}
+.btn.large { padding: 14px 20px; font-size:1.05rem; }
+
+/* Controls */
+.catalogue-controls { display:flex; justify-content:space-between; gap:1rem; align-items:center; margin: var(--space-md) 0; flex-wrap:wrap; }
+.catalogue-controls label { display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-weight:600; }
+.catalogue-controls input, .catalogue-controls select { padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--text); }
+
+/* Grid & cards */
+.games-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+@media (max-width: 980px){ .games-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px){ .games-grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-radius: var(--radius);
+  padding: 12px;
+  display:flex; flex-direction:column; gap:10px;
+  min-height: 180px;
+  transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s ease;
+  border: 1px solid var(--glass-border);
+}
+.card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(2,6,23,0.45); }
+
+.card img { width:100%; height:140px; object-fit:cover; border-radius:8px; }
+.card h4 { margin:0; font-size:1.05rem; color:var(--text); }
+.card .small { color:var(--muted); font-size:0.93rem; }
+.price { font-weight:800; color:var(--accent); }
+
+/* Features / sections */
+.features { display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-md); margin-bottom:var(--space-md); }
+@media (max-width: 900px) { .features { grid-template-columns: repeat(1, 1fr); } }
+.features article { padding:var(--space-md); border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border:1px solid var(--glass-border); }
+
+/* Detail page */
+.game-detail { display:grid; grid-template-columns:1fr; gap:var(--space-md); margin: var(--space-md) 0; }
+@media (min-width:900px){ .game-detail { grid-template-columns: 2fr 1fr; } }
+.detail-gallery img { width:100%; height:400px; object-fit:cover; border-radius:10px; }
+
+/* Forms & inputs */
+input, select, textarea {
+  padding: 10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
+  background: transparent; color: var(--text); outline: none;
+}
+input:focus, textarea:focus, select:focus { box-shadow: 0 6px 24px rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.28); }
+
+/* Footer */
+.site-footer { padding: var(--space-md) 0; text-align:center; color:var(--muted); border-top:1px solid var(--glass-border); margin-top:var(--space-lg); }
+
+/* Utilities */
+.container-sm { max-width: 880px; margin: 0 auto; }
+.small { font-size:0.92rem; color:var(--muted); }
+.center { text-align:center; }
+
+/* Badges & meta */
+.badge { padding:6px 10px; border-radius:999px; background: rgba(255,255,255,0.03); color:var(--muted); font-weight:600; font-size:0.9rem; }
+
+/* Accessibility & motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* Print */
+@media print {
+  body { background: #fff; color: #000; }
+  nav, .btn, .site-footer { display:none !important; }
+}
+
+/* Small responsive tweaks */
+@media (max-width: 720px) {
+  .site-header .container { gap: 0.5rem; }
+  nav { display:none; }
+  .nav-toggle { display:inline-flex; }
+  .hero { flex-direction:column; align-items:flex-start; }
+  .hero .hero-actions { width:100%; display:flex; gap:10px; flex-wrap:wrap; }
+  .card img { height:150px; }
+}
+
+/* End of file — modifiez les variables au sommet pour personnaliser */
+
+/* ===== API banner + filters ===== */
+.api-banner{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 10px 0;
+}
+.api-banner .container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+.filters-row{
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 0.8fr auto;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.input{
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text);
+}
+.input:focus{ outline: 2px solid rgba(34,197,94,0.35); outline-offset: 2px; }
+.error{ color: var(--danger); }
+.small{ font-size: 0.9rem; color: var(--muted); }
+
+@media (max-width: 860px){
+  .filters-row{ grid-template-columns: 1fr; }
+  .api-banner .container{ flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Vendeur</title></head>
+<body>
+  <h2>Créer compte vendeur</h2>
+  <input id="lastName" placeholder="Nom"><br>
+  <input id="firstName" placeholder="Prénom"><br>
+  <input id="email" placeholder="Email Gmail"><br>
+  <input id="phone" placeholder="Téléphone"><br>
+  <button onclick="register()">Créer</button>
+
+  <h3>Valider le code</h3>
+  <input id="code" placeholder="Code reçu"><br>
+  <button onclick="verify()">Valider</button>
+
+  <script>
+  const API = localStorage.getItem("API_URL");
+
+  async function register(){
+    await fetch(API+"/api/vendors/register",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        firstName:firstName.value,
+        lastName:lastName.value,
+        email:email.value,
+        phone:phone.value
+      })
+    });
+    alert("Code envoyé");
+  }
+
+  async function verify(){
+    await fetch(API+"/api/vendors/verify",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email:email.value,code:code.value})
+    });
+    alert("Compte validé");
+  }
+  </script>
+</body>
+</html>

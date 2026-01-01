@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jeux — GAMEGABON</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1><a href="index.html">GAMEGABON</a></h1>
+      <nav>
+        <a class="btn" href="become-seller.html">💼 Devenir vendeur</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="filters"></section>
+
+    <section class="catalogue-controls">
+      <div>
+        <label>Filtrer :
+          <select id="filter-type">
+            <option value="all">Tous</option>
+            <option value="free">Gratuit</option>
+            <option value="paid">Payant</option>
+          </select>
+        </label>
+
+        <label>Genre :
+          <select id="filter-genre">
+            <option value="all">Tous</option>
+            <option>Action</option>
+            <option>RPG</option>
+            <option>Indie</option>
+            <option>Simulation</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <input id="search" placeholder="Rechercher un jeu..." />
+      </div>
+    </section>
+
+    <section id="games-list" class="games-grid">
+      <!-- Les jeux sont injectés par assets/js/main.js -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© GAMEGABON</small>
+    </div>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
