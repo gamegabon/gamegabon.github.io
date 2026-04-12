@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Node.js pour Débutants</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Personnalisation de la barre de défilement */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .prose h2 { font-size: 1.875rem; font-weight: 700; color: #0f172a; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        .prose h3 { font-size: 1.25rem; font-weight: 600; color: #1e293b; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .prose p { margin-bottom: 1rem; line-height: 1.7; color: #334155; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #334155; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .prose strong { color: #0f172a; font-weight: 600; }
+        .prose pre { border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1.5rem; background-color: #1e293b !important; }
+        .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        
+        /* Cacher les modules inactifs */
+        .module-content { display: none; }
+        .module-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <!-- Menu Latéral -->
+    <aside class="w-full md:w-72 bg-slate-900 text-slate-300 flex flex-col h-auto md:h-screen flex-shrink-0 z-10 shadow-xl">
+        <div class="p-6 bg-slate-950 border-b border-slate-800 flex items-center justify-between md:block">
+            <div>
+                <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                    <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Node.js Master
+                </h1>
+                <p class="text-xs text-slate-500 mt-1 hidden md:block">Cours complet pour débutants</p>
+            </div>
+            <!-- Bouton menu mobile -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+        
+        <nav id="sidebar-nav" class="flex-1 overflow-y-auto py-4 hidden md:block">
+            <ul class="space-y-1 px-3">
+                <li>
+                    <button onclick="showModule('intro')" id="nav-intro" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors bg-blue-600 text-white">
+                        Accueil & Prérequis
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod1')" id="nav-mod1" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        1. Introduction à Node.js
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod2')" id="nav-mod2" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        2. Configuration
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod3')" id="nav-mod3" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        3. Les Fondamentaux
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod4')" id="nav-mod4" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        4. NPM (Package Manager)
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod5')" id="nav-mod5" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        5. Express.js
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod6')" id="nav-mod6" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        6. Bases de données (MongoDB)
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod7')" id="nav-mod7" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        7. Projet : API REST Complète
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showModule('mod8')" id="nav-mod8" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white">
+                        8. Concepts Avancés
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenu Principal -->
+    <main class="flex-1 overflow-y-auto bg-white p-6 md:p-12 relative" id="main-scroll-area">
+        <div class="max-w-4xl mx-auto prose pb-20">
+
+            <!-- Accueil -->
+            <div id="intro" class="module-content active">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8">
+                    <h1 class="text-3xl font-bold text-blue-900 mb-2">Bienvenue dans le cours complet Node.js !</h1>
+                    <p class="text-blue-800 m-0">Ce cours interactif vous guidera étape par étape, des bases absolues jusqu'à la création de votre première API REST. Utilisez le menu de gauche pour naviguer entre les modules.</p>
+                </div>
+
+                <h2>Prérequis</h2>
+                <p>Avant de commencer ce cours, il est fortement recommandé d'avoir une connaissance de base des concepts suivants :</p>
+                <ul>
+                    <li><strong>JavaScript (ES6+)</strong> : Variables, fonctions, boucles, objets, tableaux, promesses et <code>async/await</code>.</li>
+                    <li><strong>Ligne de commande (Terminal)</strong> : Savoir naviguer dans les répertoires (<code>cd</code>), lister les fichiers (<code>ls</code>/<code>dir</code>).</li>
+                    <li><strong>Concepts de base du Web</strong> : Qu'est-ce qu'une requête HTTP, une réponse, une API REST.</li>
+                </ul>
+                
+                <button onclick="showModule('mod1')" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2">
+                    Commencer le Module 1
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+
+            <!-- Module 1 -->
+            <div id="mod1" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 1</span>
+                <h2>Introduction à Node.js</h2>
+
+                <h3>1.1 Qu'est-ce que Node.js ?</h3>
+                <p>Node.js est un <strong>environnement d'exécution JavaScript côté serveur</strong> open source et multiplateforme. Il vous permet d'exécuter du code JavaScript en dehors d'un navigateur web. Il est construit sur le moteur JavaScript ultra-rapide <strong>V8 de Google Chrome</strong>.</p>
+
+                <h3>1.2 Pourquoi utiliser Node.js ?</h3>
+                <ul>
+                    <li><strong>Full-stack JavaScript</strong> : Si vous connaissez déjà JavaScript pour le frontend (React, Vue, etc.), vous pouvez l'utiliser aussi pour le backend.</li>
+                    <li><strong>Performance exceptionnelle</strong> : Grâce à son modèle non bloquant (asynchrone) et orienté événements, Node.js est parfait pour gérer des milliers de connexions simultanées (chats, streaming, API rapides).</li>
+                    <li><strong>Écosystème riche</strong> : Le registre NPM (Node Package Manager) est la plus grande bibliothèque de code open-source au monde.</li>
+                </ul>
+
+                <h3>1.3 Architecture de Node.js (Event Loop)</h3>
+                <p>La magie de Node.js réside dans son <strong>Event Loop</strong> (boucle d'événements). Node.js est <strong>monothreadé</strong> (un seul fil d'exécution principal), mais il délègue les tâches lourdes (lire un fichier, interroger une base de données, requêtes réseau) au système d'exploitation.</p>
+                <p>L'Event Loop surveille la fin de ces tâches en arrière-plan et exécute les fonctions de rappel (callbacks) correspondantes sans jamais bloquer le programme principal.</p>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('intro')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod2')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div id="mod2" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 2</span>
+                <h2>Configuration de l'Environnement</h2>
+
+                <h3>2.1 Installation</h3>
+                <p>Pour commencer à coder, vous devez installer Node.js sur votre machine :</p>
+                <ol class="list-decimal pl-6 mb-4 text-slate-700 space-y-2">
+                    <li>Visitez le site officiel : <a href="https://nodejs.org/" target="_blank" class="text-blue-600 hover:underline">nodejs.org</a></li>
+                    <li>Téléchargez et installez la version <strong>LTS (Long Term Support)</strong>. C'est la plus stable.</li>
+                    <li>Ouvrez votre terminal (Invite de commandes, PowerShell ou Terminal macOS/Linux).</li>
+                    <li>Vérifiez l'installation en tapant ces deux commandes :</li>
+                </ol>
+<pre><code class="language-bash">node -v
+npm -v</code></pre>
+                <p>Si des numéros de version s'affichent, félicitations, vous êtes prêt !</p>
+
+                <h3>2.2 Votre premier programme Node.js ("Hello World")</h3>
+                <p>Créez un dossier pour votre projet, ouvrez-le dans votre éditeur de code (comme VS Code), et créez un fichier nommé <code>app.js</code>.</p>
+<pre><code class="language-javascript">// app.js
+console.log("Bonjour, Monde ! Ceci est mon premier programme Node.js.");
+
+const nom = "Alice";
+console.log(`Salut, ${nom} !`);</code></pre>
+                <p>Pour l'exécuter, ouvrez votre terminal dans le même dossier et tapez :</p>
+<pre><code class="language-bash">node app.js</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod1')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod3')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div id="mod3" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 3</span>
+                <h2>Les Fondamentaux de Node.js</h2>
+
+                <h3>3.1 Objets Globaux</h3>
+                <p>Contrairement au navigateur où <code>window</code> est l'objet global, dans Node.js, nous utilisons d'autres objets globaux intégrés :</p>
+                <ul>
+                    <li><code>process</code> : Informations sur le processus actuel (ex: <code>process.env</code> pour les variables d'environnement).</li>
+                    <li><code>__dirname</code> : Le chemin absolu du dossier où se trouve le fichier actuel.</li>
+                    <li><code>__filename</code> : Le chemin absolu du fichier actuel.</li>
+                </ul>
+
+                <h3>3.2 Le Système de Modules (CommonJS)</h3>
+                <p>Pour organiser votre code, Node.js utilise <code>module.exports</code> et <code>require</code>.</p>
+<pre><code class="language-javascript">// 1. Créez un fichier math.js
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+
+module.exports = { add, subtract };
+
+// 2. Dans votre fichier app.js
+const math = require('./math');
+console.log(math.add(5, 3)); // Affiche 8</code></pre>
+
+                <h3>3.3 Le Module <code>fs</code> (File System)</h3>
+                <p>Permet de lire et écrire des fichiers sur votre ordinateur. Il est recommandé d'utiliser la version asynchrone avec les promesses pour ne pas bloquer l'Event Loop.</p>
+<pre><code class="language-javascript">const fs = require('fs').promises;
+
+async function gererFichier() {
+    try {
+        // Écrire un fichier
+        await fs.writeFile('test.txt', 'Bonjour Node.js !');
+        console.log('Fichier créé.');
+
+        // Lire le fichier
+        const data = await fs.readFile('test.txt', 'utf8');
+        console.log('Contenu du fichier :', data);
+    } catch (err) {
+        console.error("Erreur :", err);
+    }
+}
+
+gererFichier();</code></pre>
+
+                <h3>3.4 Le Module <code>http</code> : Créer un serveur web basique</h3>
+                <p>Node.js intègre un module pour créer des serveurs web sans aucune bibliothèque externe.</p>
+<pre><code class="language-javascript">const http = require('http');
+
+const server = http.createServer((req, res) => {
+    // req = Requête du client (navigateur)
+    // res = Réponse que le serveur va envoyer
+    
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.end('Bonjour depuis mon premier serveur Node.js !');
+});
+
+server.listen(3000, () => {
+    console.log('Serveur en écoute sur le port 3000 (http://localhost:3000)');
+});</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod2')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod4')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div id="mod4" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 4</span>
+                <h2>NPM (Node Package Manager)</h2>
+
+                <p>NPM est le gestionnaire de paquets par défaut de Node.js. C'est grâce à lui que vous pouvez installer des bibliothèques externes (comme Express, React, Mongoose) créées par la communauté.</p>
+
+                <h3>4.1 Initialiser un projet</h3>
+                <p>Avant d'installer des paquets, vous devez initialiser votre projet. Dans le terminal, tapez :</p>
+<pre><code class="language-bash">npm init -y</code></pre>
+                <p>Cela crée un fichier <code>package.json</code>. Ce fichier est la "carte d'identité" de votre projet. Il liste le nom du projet, sa version, et surtout, toutes les dépendances (bibliothèques) dont il a besoin pour fonctionner.</p>
+
+                <h3>4.2 Installer des packages</h3>
+                <p>Pour installer un paquet, on utilise <code>npm install</code> (ou <code>npm i</code>) :</p>
+<pre><code class="language-bash"># Installe Express.js (dépendance de production)
+npm install express      
+
+# Installe Nodemon (dépendance de développement uniquement)
+npm install nodemon -D   </code></pre>
+                <p><em>Note : <code>nodemon</code> est un outil magique qui relance automatiquement votre serveur Node.js à chaque fois que vous sauvegardez un fichier. Plus besoin d'arrêter et de relancer le serveur manuellement !</em></p>
+
+                <h3>4.3 Scripts NPM</h3>
+                <p>Dans votre <code>package.json</code>, vous pouvez définir des raccourcis de commandes dans la section "scripts" :</p>
+<pre><code class="language-json">"scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+}</code></pre>
+                <p>Maintenant, pour lancer votre serveur en mode développement, il suffit de taper dans le terminal :</p>
+<pre><code class="language-bash">npm run dev</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod3')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod5')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
+            <div id="mod5" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 5</span>
+                <h2>Construire des Applications avec Express.js</h2>
+
+                <p>Bien que le module <code>http</code> natif soit puissant, il devient vite complexe pour de grosses applications. <strong>Express.js</strong> est le framework web le plus populaire pour Node.js. Il simplifie énormément la création de serveurs, la gestion des routes (URL) et la manipulation des requêtes/réponses.</p>
+
+                <h3>5.1 Premier serveur Express</h3>
+                <p>Assurez-vous d'avoir installé Express (<code>npm install express</code>), puis créez votre serveur :</p>
+<pre><code class="language-javascript">const express = require('express');
+const app = express();
+const PORT = 3000;
+
+// Middleware pour autoriser la lecture de JSON envoyé par le client
+app.use(express.json());
+
+// Route GET basique (quand l'utilisateur visite l'URL racine '/')
+app.get('/', (req, res) => {
+    res.send('Bienvenue sur mon API Express ! 🚀');
+});
+
+app.listen(PORT, () => {
+    console.log(`Serveur Express démarré sur http://localhost:${PORT}`);
+});</code></pre>
+
+                <h3>5.2 Routage et Paramètres</h3>
+                <p>Express rend la récupération de données depuis l'URL ou le corps de la requête très intuitive.</p>
+<pre><code class="language-javascript">// 1. Récupérer un paramètre d'URL (ex: visite de /users/42)
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id; // Récupère le "42"
+    res.json({ 
+        message: `Détails de l'utilisateur ${userId}`,
+        id: userId
+    });
+});
+
+// 2. Récupérer des données d'une requête POST (ex: formulaire d'inscription)
+app.post('/users', (req, res) => {
+    // req.body contient les données envoyées au format JSON
+    const userData = req.body; 
+    
+    // On renvoie un code HTTP 201 (Created)
+    res.status(201).json({ 
+        message: 'Utilisateur créé avec succès !', 
+        data: userData 
+    });
+});</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod4')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod6')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 6 -->
+            <div id="mod6" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 6</span>
+                <h2>Bases de Données (MongoDB & Mongoose)</h2>
+
+                <h3>6.1 Introduction à MongoDB</h3>
+                <p>Une application backend a besoin de sauvegarder des données de manière persistante. <strong>MongoDB</strong> est une base de données NoSQL extrêmement populaire dans l'écosystème Node.js. Contrairement aux bases de données SQL (tableaux), MongoDB stocke les données sous forme de documents JSON flexibles.</p>
+
+                <h3>6.2 Mongoose : L'outil indispensable</h3>
+                <p>Pour faire le pont entre notre code Node.js et MongoDB, nous utilisons <strong>Mongoose</strong>. Il nous permet de définir des structures de données strictes (Schémas) et d'interagir facilement avec la base.</p>
+                <p>Installation : <code>npm install mongoose</code></p>
+
+                <h3>6.3 Connexion et Création de Modèle</h3>
+<pre><code class="language-javascript">const mongoose = require('mongoose');
+
+// 1. Connexion à la base de données MongoDB (locale ou Atlas dans le cloud)
+mongoose.connect('mongodb://localhost:27017/mabase')
+    .then(() => console.log('✅ Connecté à MongoDB'))
+    .catch(err => console.error('❌ Erreur de connexion', err));
+
+// 2. Création d'un Schéma (la structure de notre donnée)
+const tacheSchema = new mongoose.Schema({
+    titre: { type: String, required: true },
+    description: { type: String },
+    terminee: { type: Boolean, default: false },
+    dateCreation: { type: Date, default: Date.now }
+});
+
+// 3. Création du Modèle (l'objet qui nous permettra d'interagir avec la collection)
+const Tache = mongoose.model('Tache', tacheSchema);
+
+// On peut maintenant utiliser Tache.find(), Tache.create(), etc.
+module.exports = Tache;</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod5')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod7')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 7 -->
+            <div id="mod7" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Module 7</span>
+                <h2>Projet Complet : API REST de Gestion de Tâches</h2>
+
+                <p>Mélangeons tout ce que nous avons appris (Express) pour créer une véritable API <strong>CRUD</strong> (Create, Read, Update, Delete). Pour cet exemple, afin qu'il fonctionne immédiatement sans installation de base de données externe, nous utiliserons un tableau en mémoire pour simuler la base de données.</p>
+
+<pre><code class="language-javascript">const express = require('express');
+const app = express();
+app.use(express.json()); // Indispensable pour lire le JSON
+
+// Simulation de notre Base de données
+let taches = [
+    { id: 1, titre: "Apprendre Node.js", terminee: false },
+    { id: 2, titre: "Créer une API REST", terminee: true }
+];
+
+// ==========================================
+// R - READ : Récupérer toutes les tâches
+// ==========================================
+app.get('/taches', (req, res) => {
+    res.json(taches);
+});
+
+// ==========================================
+// C - CREATE : Ajouter une nouvelle tâche
+// ==========================================
+app.post('/taches', (req, res) => {
+    if (!req.body.titre) {
+        return res.status(400).json({ erreur: "Le titre est obligatoire." });
+    }
+    
+    const nouvelleTache = {
+        id: taches.length > 0 ? taches[taches.length - 1].id + 1 : 1,
+        titre: req.body.titre,
+        terminee: false
+    };
+    taches.push(nouvelleTache);
+    res.status(201).json(nouvelleTache); // 201 = Créé avec succès
+});
+
+// ==========================================
+// U - UPDATE : Modifier une tâche (la marquer terminée)
+// ==========================================
+app.put('/taches/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const tache = taches.find(t => t.id === id);
+    
+    if (!tache) {
+        return res.status(404).json({ erreur: 'Tâche non trouvée' });
+    }
+    
+    // Mise à jour
+    tache.terminee = req.body.terminee !== undefined ? req.body.terminee : tache.terminee;
+    tache.titre = req.body.titre || tache.titre;
+    
+    res.json(tache);
+});
+
+// ==========================================
+// D - DELETE : Supprimer une tâche
+// ==========================================
+app.delete('/taches/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = taches.findIndex(t => t.id === id);
+    
+    if (index === -1) {
+        return res.status(404).json({ erreur: 'Tâche non trouvée' });
+    }
+    
+    taches.splice(index, 1); // Supprime l'élément du tableau
+    res.status(204).send(); // 204 = No Content (Suppression réussie)
+});
+
+// Lancement du serveur
+app.listen(3000, () => {
+    console.log('✅ API de tâches démarrée sur http://localhost:3000');
+});</code></pre>
+
+                <div class="mt-10 flex justify-between">
+                    <button onclick="showModule('mod6')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                    <button onclick="showModule('mod8')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">Module Suivant &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Module 8 -->
+            <div id="mod8" class="module-content">
+                <span class="text-sm font-bold tracking-wider text-blue-600 uppercase">Modules 8 & 9</span>
+                <h2>Concepts Avancés et Prochaines Étapes</h2>
+
+                <p>Félicitations ! Vous avez maintenant les bases de Node.js et d'Express. Pour créer des applications professionnelles prêtes pour la production, voici les concepts cruciaux vers lesquels vous devez vous diriger :</p>
+
+                <h3>1. Sécuriser les secrets (Variables d'environnement)</h3>
+                <p>Ne stockez <strong>jamais</strong> vos mots de passe de base de données ou vos clés secrètes d'API en texte clair dans votre code. Utilisez le paquet <code>dotenv</code> pour charger ces informations depuis un fichier caché <code>.env</code> non publié sur GitHub.</p>
+
+                <h3>2. Hachage des mots de passe</h3>
+                <p>Si vous créez un système d'utilisateurs, utilisez la bibliothèque <code>bcrypt</code> pour "hacher" (crypter de façon irréversible) les mots de passe avant de les sauvegarder en base de données.</p>
+
+                <h3>3. Authentification (JWT)</h3>
+                <p>Apprenez à utiliser les <strong>JSON Web Tokens (JWT)</strong>. Lorsqu'un utilisateur se connecte, vous lui donnez un jeton (token). Il devra renvoyer ce jeton lors de ses prochaines requêtes pour prouver son identité sans avoir à renvoyer son mot de passe à chaque fois.</p>
+
+                <h3>4. Temps réel avec Socket.IO</h3>
+                <p>Pour créer un chat en direct, un tableau de bord qui s'actualise seul, ou un jeu multijoueur, les requêtes HTTP classiques ne suffisent pas. Apprenez à utiliser <strong>Socket.IO</strong>, qui permet une communication bidirectionnelle en temps réel (WebSockets) entre le serveur et le client.</p>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg mt-10">
+                    <h3 class="text-xl font-bold text-green-900 mt-0 mb-2">🎉 Vous êtes prêt !</h3>
+                    <p class="text-green-800 m-0">La meilleure façon d'apprendre est de pratiquer. Essayez de refaire le projet de l'API de tâches, mais cette fois-ci en connectant véritablement Mongoose et MongoDB Cloud (Atlas). Bon code !</p>
+                </div>
+
+                <div class="mt-10 flex justify-start">
+                    <button onclick="showModule('mod7')" class="text-slate-500 hover:text-slate-800 font-medium py-2 px-4 rounded transition-colors">&larr; Précédent</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    
+    <script>
+        function showModule(id) {
+            // Cacher tous les modules
+            document.querySelectorAll('.module-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Afficher le module cible
+            document.getElementById(id).classList.add('active');
+            
+            // Réinitialiser les styles du menu
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('bg-blue-600', 'text-white');
+                el.classList.add('hover:bg-slate-800', 'hover:text-white', 'text-slate-300');
+            });
+            
+            // Mettre en surbrillance le bouton actif
+            const activeBtn = document.getElementById('nav-' + id);
+            if(activeBtn) {
+                activeBtn.classList.remove('hover:bg-slate-800', 'hover:text-white', 'text-slate-300');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
+            
+            // Scroller en haut
+            document.getElementById('main-scroll-area').scrollTop = 0;
+
+            // Fermer le menu sur mobile après clic
+            const nav = document.getElementById('sidebar-nav');
+            if(window.innerWidth < 768) {
+                nav.classList.add('hidden');
+            }
+        }
+
+        // Gestion du menu mobile
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const nav = document.getElementById('sidebar-nav');
+            nav.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+
+
