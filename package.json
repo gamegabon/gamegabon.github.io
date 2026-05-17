@@ -1,0 +1,25 @@
+{
+  "name": "streamflix-p2p",
+  "version": "1.0.0",
+  "description": "Plateforme de streaming décentralisée utilisant le protocole WebTorrent P2P",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "streaming",
+    "webtorrent",
+    "p2p",
+    "express",
+    "apibay"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
