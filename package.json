@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Plateforme de streaming Premium propulsée par Railway",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
