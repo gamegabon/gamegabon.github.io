@@ -1,30 +1,17 @@
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
+const WebTorrent = require('webtorrent');
 
 const app = express();
-// Railway attribue dynamiquement un port via process.env.PORT
 const PORT = process.env.PORT || 3000;
 
-// Servir les fichiers statiques du dossier public (où se trouve ton index.html)
+// Initialisation du client de streaming sur le serveur (se connecte aux vrais pairs BitTorrent)
+const torrentClient = new WebTorrent();
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Liste optimisée de trackers publics pour accélérer la recherche de pairs (peers) sous WebTorrent
-const TRACKERS = [
-    'udp://tracker.coppersurfer.tk:6969/announce',
-    'udp://tracker.openbittorrent.com:6969/announce',
-    'udp://open.demonii.com:1337/announce',
-    'udp://tracker.leechers-paradise.org:6969/announce',
-    'udp://tracker.cyberia.is:6969/announce',
-    'udp://p4p.arenabg.com:1337/announce',
-    'udp://9.rarbg.to:2710/announce',
-    'udp://9.rarbg.me:2710/announce',
-    'udp://exodus.desync.com:6969/announce',
-    'udp://tracker.opentrackr.org:1337/announce',
-    'udp://tracker.torrent.eu.org:451/announce'
-].map(tr => `&tr=${encodeURIComponent(tr)}`).join('');
-
-// Formatage de la taille brute (bytes) renvoyée par ApiBay en chaînes lisibles (GB, MB)
+// Convertit la taille des fichiers en chaînes lisibles
 function formatSize(bytes) {
     const sizeInBytes = parseInt(bytes, 10);
     if (isNaN(sizeInBytes) || sizeInBytes === 0) return 'Taille inconnue';
@@ -33,33 +20,23 @@ function formatSize(bytes) {
     return (sizeInBytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
 }
 
-// Endpoint de recherche consommé par StreamFlix (index.html)
+// Endpoint de recherche ApiBay
 app.get('/api/search', async (req, res) => {
     const query = req.query.query;
-    
-    if (!query) {
-        return res.status(400).json({ error: 'Le paramètre de recherche "query" est obligatoire.' });
-    }
+    if (!query) return res.status(400).json({ error: 'Query manquante' });
 
     try {
-        // Requête vers l'API d'ApiBay (moteur de recherche lié à The Pirate Bay)
-        const targetUrl = `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
-        const response = await axios.get(targetUrl, { timeout: 10000 }); // Timeout de 10s pour éviter les blocages de requêtes suspendues
-        
+        const response = await axios.get(`https://apibay.org/q.php?q=${encodeURIComponent(query)}`, { timeout: 10000 });
         const data = response.data;
 
-        // Si l'API ne renvoie pas de tableau ou retourne un indicateur "aucun résultat" [{id: "0", ...}]
         if (!Array.isArray(data) || (data.length === 1 && data[0].id === '0')) {
             return res.json([]);
         }
 
-        // Nettoyage et structuration des données reçues pour l'interface de streaming
         const formattedResults = data
-            .filter(torrent => torrent.info_hash && torrent.info_hash !== '0000000000000000000000000000000000000000')
+            .filter(t => t.info_hash && t.info_hash !== '0000000000000000000000000000000000000000')
             .map(torrent => {
-                // Construction du lien magnet universel requis par webtorrent.js
-                const magnetLink = `magnet:?xt=urn:btih:${torrent.info_hash}&dn=${encodeURIComponent(torrent.name)}${TRACKERS}`;
-
+                const magnetLink = `magnet:?xt=urn:btih:${torrent.info_hash}&dn=${encodeURIComponent(torrent.name)}`;
                 return {
                     title: torrent.name,
                     size: formatSize(torrent.size),
@@ -69,29 +46,86 @@ app.get('/api/search', async (req, res) => {
                 };
             });
 
-        // Tri automatique : les torrents avec le plus de seeders (meilleure vitesse de flux) en premier
         formattedResults.sort((a, b) => b.seeders - a.seeders);
-
-        // Envoi des résultats nettoyés au frontend
         res.json(formattedResults);
-
     } catch (error) {
-        console.error(`[Erreur API] Recherche impossible pour "${query}":`, error.message);
-        // On renvoie un tableau vide plutôt qu'un crash de l'application pour une meilleure expérience utilisateur
-        res.status(500).json({ error: 'Erreur lors de la récupération des flux P2P depuis la base de données.' });
+        console.error('Erreur recherche:', error.message);
+        res.json([]);
     }
 });
 
-// Route globale de secours : renvoie vers l'interface StreamFlix pour toutes les autres requêtes
+// NOUVEAU : Endpoint magique qui transforme le torrent en lien de streaming vidéo direct
+app.get('/api/stream', (req, res) => {
+    const magnet = req.query.magnet;
+    if (!magnet) return res.status(400).send('Magnet link requis');
+
+    let torrent = torrentClient.get(magnet);
+
+    if (!torrent) {
+        torrent = torrentClient.add(magnet, (t) => {
+            handleVideoStreaming(t, req, res);
+        });
+        torrent.on('error', (err) => {
+            console.error('Erreur WebTorrent:', err.message);
+            if (!res.headersSent) res.status(500).send('Erreur lors du traitement du flux');
+        });
+    } else {
+        if (torrent.ready) {
+            handleVideoStreaming(torrent, req, res);
+        } else {
+            torrent.once('ready', () => handleVideoStreaming(torrent, req, res));
+        }
+    }
+});
+
+function handleVideoStreaming(torrent, req, res) {
+    // Trouver le fichier vidéo principal (.mp4, .mkv, ou le plus gros)
+    const file = torrent.files.find(f => f.name.endsWith('.mp4') || f.name.endsWith('.mkv') || f.name.endsWith('.webm')) || torrent.files[0];
+
+    if (!file) {
+        return res.status(404).send('Aucun fichier vidéo trouvé dans ce torrent.');
+    }
+
+    // Détermination du type de contenu
+    let contentType = 'video/mp4';
+    if (file.name.endsWith('.webm')) contentType = 'video/webm';
+    if (file.name.endsWith('.mkv')) contentType = 'video/x-matroska';
+
+    const total = file.length;
+    const range = req.headers.range;
+
+    // Gestion du streaming avec support du "seeking" (avancer/reculer dans la vidéo)
+    if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
+        const chunksize = (end - start) + 1;
+
+        res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${total}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': contentType
+        });
+
+        const stream = file.createReadStream({ start, end });
+        stream.pipe(res);
+    } else {
+        res.writeHead(200, {
+            'Content-Length': total,
+            'Content-Type': contentType
+        });
+        file.createReadStream().pipe(res);
+    }
+}
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Démarrage de l'application
 app.listen(PORT, () => {
     console.log(`=======================================================`);
-    console.log(` 🎬 Serveur StreamFlix démarré avec succès !`);
-    console.log(` 🌐 URL locale : http://localhost:${PORT}`);
-    console.log(` 🚀 Prêt pour le déploiement sur Railway`);
+    console.log(` 🎬 Serveur StreamFlix V2 (Serveur-Side) Actif !`);
+    console.log(` Port de communication : ${PORT}`);
     console.log(`=======================================================`);
 });
