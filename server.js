@@ -1,12 +1,17 @@
-const express = require('express');
-const axios = require('axios');
-const path = require('path');
-const WebTorrent = require('webtorrent');
+import express from 'express';
+import axios from 'axios';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import WebTorrent from 'webtorrent';
+
+// Recréation de __dirname indispensable pour le mode ESM (modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Initialisation du client de streaming sur le serveur (se connecte aux vrais pairs BitTorrent)
+// Initialisation du client de streaming
 const torrentClient = new WebTorrent();
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -54,7 +59,7 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
-// NOUVEAU : Endpoint magique qui transforme le torrent en lien de streaming vidéo direct
+// Endpoint de conversion Torrent -> Flux vidéo HTTP direct
 app.get('/api/stream', (req, res) => {
     const magnet = req.query.magnet;
     if (!magnet) return res.status(400).send('Magnet link requis');
@@ -79,14 +84,12 @@ app.get('/api/stream', (req, res) => {
 });
 
 function handleVideoStreaming(torrent, req, res) {
-    // Trouver le fichier vidéo principal (.mp4, .mkv, ou le plus gros)
     const file = torrent.files.find(f => f.name.endsWith('.mp4') || f.name.endsWith('.mkv') || f.name.endsWith('.webm')) || torrent.files[0];
 
     if (!file) {
         return res.status(404).send('Aucun fichier vidéo trouvé dans ce torrent.');
     }
 
-    // Détermination du type de contenu
     let contentType = 'video/mp4';
     if (file.name.endsWith('.webm')) contentType = 'video/webm';
     if (file.name.endsWith('.mkv')) contentType = 'video/x-matroska';
@@ -94,7 +97,6 @@ function handleVideoStreaming(torrent, req, res) {
     const total = file.length;
     const range = req.headers.range;
 
-    // Gestion du streaming avec support du "seeking" (avancer/reculer dans la vidéo)
     if (range) {
         const parts = range.replace(/bytes=/, "").split("-");
         const start = parseInt(parts[0], 10);
@@ -125,7 +127,7 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`=======================================================`);
-    console.log(` 🎬 Serveur StreamFlix V2 (Serveur-Side) Actif !`);
+    console.log(` 🎬 Serveur StreamFlix V2 (ESM Mode) Actif !`);
     console.log(` Port de communication : ${PORT}`);
     console.log(`=======================================================`);
 });
