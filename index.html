@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Cyberattaque : Les Bases des Réseaux</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #E0E0E0;
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3, h4, strong {
+            color: #00BFFF; /* DeepSkyBlue */
+        }
+        h1 {
+            border-bottom: 2px solid #00BFFF;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #32CD32; /* LimeGreen */
+            margin-top: 40px;
+            border-bottom: 1px solid #32CD32;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #FFD700; /* Gold */
+            margin-top: 30px;
+        }
+        h4 {
+            color: #FFA500; /* Orange */
+            margin-top: 25px;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        code {
+            background-color: #333;
+            color: #FF00FF; /* Magenta */
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Courier New', monospace;                                                            font-size: 0.95em;
+        }
+        pre {                                                      background-color: #333;                                color: #FF00FF;                                        padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .quiz {
+            background-color: #282828;
+            border-left: 5px solid #00BFFF;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }                                                      .quiz h3 {
+            color: #00BFFF;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Plan de Formation : Maîtrise de la Cyberattaque</h1>
+
+    <p>Ceci est notre feuille de route. Chaque module et chapitre sera abordé avec une précision technique absolue.</p>
+
+    <h2>Module 1 : Fondations Techniques Essentielles</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Les Bases des Réseaux</strong>
+            <ul>                                                       <li>Modèle OSI et TCP/IP</li>
+                <li>Adressage IP (IPv4, IPv6, Subnetting)</li>
+                <li>Protocoles Clés (ARP, DNS, DHCP, HTTP, HTTPS, FTP, SSH, etc.)</li>
+                <li>Outils de Diagnostic Réseau (ping, traceroute, netstat, ifconfig/ip)</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 2 : Systèmes d'Exploitation : Linux et Windows pour l'Attaquant</strong>
+            <ul>                                                       <li>Commandes de Base (Linux et PowerShell/CMD)</li>                                                          <li>Gestion des Fichiers et Permissions (ACLs, SUID/SGID)</li>                                                <li>Processus et Services</li>
+                <li>Concepts de Kernel et Espace Utilisateur</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 3 : Introduction à la Programmation et Scripting</strong>
+            <ul>                                                       <li>Bash Scripting pour l'Automatisation</li>                                                                 <li>Python : Fondamentaux pour la Cyberattaque (sockets, requêtes HTTP, manipulation de données)</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 4 : Environnements de Laboratoire Sécurisés</strong>
+            <ul>                                                       <li>Virtualisation (VMware, VirtualBox)</li>                                                                  <li>Installation et Configuration de Kali Linux / Parrot OS</li>
+                <li>Introduction à Termux pour l'environnement mobile</li>
+                <li>Réseaux Virtuels pour les Scénarios d'Attaque</li>
+            </ul>                                              </li>
+    </ul>                                              
+    <h2>Module 2 : Reconnaissance et Énumération Avancées</h2>
+    <ul>                                                       <li><strong>Chapitre 1 : Reconnaissance Passive (OSINT)</strong>
+            <ul>                                                       <li>Moteurs de Recherche (Google Dorks, Shodan, Censys)</li>                                                  <li>Réseaux Sociaux et Données Publiques</li>                                                                 <li>Analyse de Métadonnées</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 2 : Reconnaissance Active et Balayage</strong>                                               <ul>
+                <li>Scan de Ports et Services (Nmap, Masscan)</li>
+                <li>Détection de Versions et Systèmes d'Exploitation</li>
+                <li>Analyse de Vulnérabilités (Nessus, OpenVAS - concepts)</li>
+            </ul>
+        </li>
+        <li><strong>Chapitre 3 : Énumération de Cibles</strong>
+            <ul>                                                       <li>Enumération DNS (zone transfers, recon-ng)</li>
+                <li>Enumération SMB/NFS</li>
+                <li>Enumération LDAP/Active Directory</li>
+            </ul>
+        </li>                                              </ul>
+
+    <h2>Module 3 : Exploitation des Systèmes</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Attaques de Mots de Passe</strong>
+            <ul>                                                       <li>Attaques par Brute Force et Dictionnaire</li>
+                <li>Cracking de Hashes (John the Ripper, Hashcat)</li>                                                        <li>Attaques de Spraying et Credential Stuffing</li>
+            </ul>
+        </li>                                                  <li><strong>Chapitre 2 : Exploitation de Vulnérabilités Systèmes</strong>
+            <ul>
+                <li>Buffer Overflows (concept et exploitation simple)</li>
+                <li>Escalade de Privilèges (Windows et Linux)</li>                                                            <li>Injection de Commandes et Exécution de Code à Distance</li>
+            </ul>
+        </li>                                                  <li><strong>Chapitre 3 : Ingénierie Sociale et Attaques Client-Side</strong>
+            <ul>
+                <li>Techniques de Phishing et Spear-Phishing</li>
+                <li>Génération de Payloads et Fichiers Malveillants</li>                                                      <li>Concepts de Backdoors et Rootkits</li>                                                                </ul>
+        </li>                                              </ul>
+
+    <h2>Module 4 : Sécurité et Attaques des Applications Web</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Introduction aux Vulnérabilités Web (OWASP Top 10)</strong>
+            <ul>
+                <li>Architecture des Applications Web</li>
+                <li>Outils d'Interception (Burp Suite, OWASP ZAP)</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 2 : Injections</strong>
+            <ul>                                                       <li>SQL Injection (Union-based, Error-based, Blind, Time-based)</li>                                          <li>Cross-Site Scripting (XSS : Reflected, Stored, DOM-based)</li>
+                <li>Command Injection et File Inclusion (LFI/RFI)</li>                                                    </ul>
+        </li>
+        <li><strong>Chapitre 3 : Vulnérabilités d'Authentification et de Session</strong>
+            <ul>
+                <li>Broken Authentication</li>
+                <li>Session Hijacking et Fixation</li>
+                <li>Attaques CSRF (Cross-Site Request Forgery)</li>
+            </ul>                                              </li>
+        <li><strong>Chapitre 4 : Attaques sur les APIs et Web Services</strong>
+            <ul>
+                <li>Analyse et Exploitation des APIs REST/SOAP</li>
+                <li>GraphQL Injections</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Module 5 : Réseaux Sans Fil et Infrastructures</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Attaques Wi-Fi</strong>
+            <ul>
+                <li>Crackage WPA/WPA2 (Handshake Capture, PMKID)</li>
+                <li>Attaques de Déni de Service (Deauthentication)</li>
+                <li>Evil Twin et Attaques Man-in-the-Middle</li>
+            </ul>
+        </li>                                                  <li><strong>Chapitre 2 : Attaques Bluetooth et RFID</strong>
+            <ul>                                                       <li>Enumération et Exploitation de Services Bluetooth</li>
+                <li>Concepts d'Attaques RFID/NFC</li>              </ul>
+        </li>
+        <li><strong>Chapitre 3 : Attaques sur les Infrastructures Réseau</strong>
+            <ul>
+                <li>Spanning Tree Protocol (STP) Attacks</li>
+                <li>VLAN Hopping</li>
+                <li>DNS Spoofing et ARP Poisoning</li>
+                <li>Firewall Evasion et IDS/IPS Bypasses</li>                                                             </ul>
+        </li>                                              </ul>
+
+    <h2>Module 6 : Post-Exploitation et Persistance</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Maintien de l'Accès</strong>
+            <ul>                                                       <li>Création de Backdoors Persistantes</li>
+                <li>Techniques de persistance (registre Windows, cron jobs Linux, services)</li>
+            </ul>
+        </li>
+        <li><strong>Chapitre 2 : Exfiltration de Données</strong>
+            <ul>
+                <li>Techniques de transfert de fichiers (DNS tunneling, ICMP, HTTP/S)</li>                                    <li>Compression et Chiffrement pour l'exfiltration</li>                                                   </ul>
+        </li>
+        <li><strong>Chapitre 3 : Pivot et Mouvement Latéral</strong>
+            <ul>
+                <li>Techniques de Pivotage (SSH tunneling, SOCKS proxy)</li>
+                <li>Mouvement Latéral (Pass-the-Hash, PsExec, WinRM)</li>
+            </ul>
+        </li>
+        <li><strong>Chapitre 4 : Nettoyage des Traces</strong>                                                            <ul>                                                       <li>Suppression de Journaux (logs)</li>                <li>Modification des horodatages (timestomp)</li>
+                <li>Utilisation d'outils de nettoyage spécifiques</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Module 7 : Développement d'Exploits et Cyber-Opérations Avancées</h2>
+    <ul>
+        <li><strong>Chapitre 1 : Ingénierie Inverse et Analyse Binaire</strong>                                           <ul>
+                <li>Introduction à l'Assembleur (x86/x64)</li>
+                <li>Désassembleurs et Débuggers (Ghidra, IDA Pro, OllyDbg)</li>
+                <li>Analyse de Malware</li>
+            </ul>
+        </li>
+        <li><strong>Chapitre 2 : Fuzzing et Découverte de Vulnérabilités</strong>
+            <ul>
+                <li>Concepts de Fuzzing</li>                           <li>Outils de Fuzzing (AFL, Peach Fuzzer)</li>                                                                <li>Découverte de 0-days</li>                      </ul>
+        </li>
+        <li><strong>Chapitre 3 : Red Teaming et Cyber-Opérations</strong>                                                 <ul>
+                <li>Cadre d'une Opération Red Team</li>
+                <li>Opérations de Command & Control (C2 Frameworks : Cobalt Strike, Empire)</li>                              <li>Évasion des Systèmes de Détection (AV/EDR Evasion)</li>                                                   <li>Analyse d'Attaques Avancées Persistantes (APT)</li>
+            </ul>                                              </li>
+    </ul>                                              
+    <hr>                                               
+    <p>Commençons par le premier chapitre du <strong>Module 1 : Fondations Techniques Essentielles</strong>.</p>
+                                                           <h3>Module 1 - Chapitre 1 : Les Bases des Réseaux</h3>                                                    
+    <p>Pour comprendre comment attaquer un réseau, il faut d'abord comprendre comment il fonctionne. Les réseaux sont le système nerveux d'Internet et de toute infrastructure numérique.</p>                                                                                          <h4>1. Le Modèle OSI (Open Systems Interconnection)</h4>
+    <p>Le modèle OSI est un concept théorique qui divise les fonctions de communication réseau en sept couches distinctes. Chaque couche a une fonction spécifique et interagit avec les couches adjacente. Bien qu'il soit plus un modèle de référence, il aide à visualiser le flux de données.</p>                                         <ul>                                                       <li><strong>Couche 7 : Application</strong> (Ex: <code>HTTP</code>, <code>FTP</code>, <code>SMTP</code>, <code>DNS</code>) - C'est l'interface avec les applications utilisateur.</li>                                      <li><strong>Couche 6 : Présentation</strong> (Ex: Cryptage/Déchiffrement, Compression) - Assure que les données sont dans un format utilisable par la couche application.</li>
+        <li><strong>Couche 5 : Session</strong> (Ex: <code>NetBIOS</code>, <code>RPC</code>) - Établit, gère et termine les sessions entre les applications.</li>
+        <li><strong>Couche 4 : Transport</strong> (Ex: <code>TCP</code>, <code>UDP</code>) - Gère la segmentation des données, le contrôle de flux et la détection d'erreurs.</li>                                                  <li><strong>Couche 3 : Réseau</strong> (Ex: <code>IP</code>, <code>ICMP</code>) - Gère l'adressage logique (IP) et le routage des paquets à travers le réseau.</li>                                                         <li><strong>Couche 2 : Liaison de Données</strong> (Ex: <code>Ethernet</code>, <code>PPP</code>, <code>Wi-Fi</code>) - Gère l'adressage physique (MAC), la détection d'erreurs au niveau de la trame.</li>
+        <li><strong>Couche 1 : Physique</strong> (Ex: Câbles, Fibres optiques, Ondes radio) - Gère la transmission physique des bits.</li>                               </ul>
+
+    <h4>2. Le Modèle TCP/IP (Transmission Control Protocol/Internet Protocol)</h4>
+    <p>Le modèle TCP/IP est plus pratique et est celui réellement implémenté sur Internet. Il est plus condensé, fusionnant certaines couches de l'OSI.</p>              <ul>
+        <li><strong>Couche Application</strong> (OSI 5, 6, 7) : Regroupe les fonctions des couches Application, Présentation et Session de l'OSI. C'est là que les protocoles comme <code>HTTP</code>, <code>FTP</code>, <code>DNS</code> opèrent.</li>
+        <li><strong>Couche Transport</strong> (OSI 4) : Identique à l'OSI, avec <code>TCP</code> (fiable, orienté connexion) et <code>UDP</code> (rapide, non fiable, sans connexion).</li>
+        <li><strong>Couche Internet</strong> (OSI 3) : Gère l'adressage IP et le routage des paquets. C'est le domaine d'<code>IP</code> et <code>ICMP</code>.</li>          <li><strong>Couche Accès Réseau</strong> (OSI 1, 2) : Fusionne les couches Liaison de Données et Physique de l'OSI. C'est là qu'<code>Ethernet</code>, <code>Wi-Fi</code> et les adresses MAC opèrent.</li>
+    </ul>                                                                                                         <p><strong>Différences Clés pour l'Attaquant :</strong></p>                                                   <ul>
+        <li><strong>OSI</strong> : Utile pour isoler la cause d'une vulnérabilité ou d'une défaillance à une couche spécifique. Par exemple, une attaque Wi-Fi vise la couche 2, un déni de service TCP la couche 4, et une injection SQL la couche 7.</li>                                <li><strong>TCP/IP</strong> : Plus pertinent pour les outils et protocoles réellement utilisés.</li>      </ul>                                                                                                         <h4>3. Adressage IP (IPv4 et IPv6)</h4>                <p>L'adresse IP est l'identifiant logique d'un appareil sur un réseau.</p>
+    <ul>
+        <li><strong>IPv4</strong> : Composée de 4 octets (32 bits), souvent écrite sous forme décimale pointée (ex: <code>192.168.1.1</code>).
+            <ul>                                                       <li><strong>Classes d'Adresses</strong> : Historiquement, A, B, C, D, E.</li>                                 <li><strong>Adresses Publiques vs. Privées</strong> :
+                    <ul>                                                       <li>Privées (non routables sur Internet) :                                                                        <ul>
+                                <li><code>10.0.0.0</code> à <code>10.255.255.255</code> (Classe A)</li>                                       <li><code>172.16.0.0</code> à <code>172.31.255.255</code> (Classe B)</li>
+                                <li><code>192.168.0.0</code> à <code>192.168.255.255</code> (Classe C)</li>                               </ul>                                              </li>                                                  <li>Toutes les autres sont publiques ou réservées.</li>                                                   </ul>
+                </li>
+                <li><strong>Masque de Sous-réseau (Subnet Mask)</strong> : Définit la partie de l'adresse IP qui représente le réseau et la partie qui représente l'hôte. (Ex: <code>255.255.255.0</code> pour <code>/24</code>).</li>                                                             <li><strong>Notation CIDR (Classless Inter-Domain Routing)</strong> : <code>/nombre_de_bits_réseau</code> (Ex: <code>192.168.1.0/24</code>).</li>                </ul>                                              </li>
+        <li><strong>IPv6</strong> : Composée de 16 octets (128 bits), écrite en hexadécimal séparé par des deux-points (ex: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code>).
+            <ul>                                                       <li>Plus complexe, mais offre un espace d'adressage colossal.</li>
+                <li>Concepts similaires de réseau/hôte mais avec des préfixes.</li>                                       </ul>                                              </li>
+    </ul>
+                                                           <p><strong>Pourquoi l'adressage est crucial pour l'attaquant ?</strong><br>
+    Connaître l'adresse IP d'une cible est la première étape pour l'atteindre. Comprendre les masques de sous-réseau permet de découvrir la plage complète d'adresses d'un réseau et d'identifier toutes les cibles potentielles. Les adresses privées/publiques indiquent si une cible est directement accessible depuis Internet ou se trouve derrière un NAT/routeur.</p>                                                                                <div class="quiz">                                         <h3>Mini-Quiz / Exercice Pratique</h3>                 <ol>
+            <li><strong>Question de Théorie :</strong> Si une attaque vise à intercepter des communications non chiffrées entre deux applications, à quelle(s) couche(s) du modèle OSI pourrait-elle se situer principalement ? Pourquoi ?</li>
+            <li><strong>Exercice Pratique (Kali Linux ou Termux) :</strong>                                                   <ul>                                                       <li>Ouvrez un terminal.</li>                           <li>Utilisez la commande <code>ip a</code> (ou <code>ifconfig</code> si <code>ip</code> n'est pas disponible) pour afficher les adresses IP de votre machine.</li>                                                          <li>Identifiez l'adresse IPv4 de votre interface réseau principale (généralement <code>eth0</code> ou <code>wlan0</code>).</li>                                      <li>Quelle est sa notation CIDR ?</li>
+                    <li>Déterminez si cette adresse est publique ou privée. Justifiez votre réponse.</li>
+                    <li>Utilisez la commande <code>ping 8.8.8.8</code> (un serveur DNS public de Google). Que remarquez-vous ? Quel protocole est utilisé par <code>ping</code> et à quelle couche TCP/IP opère-t-il ?</li>
+                </ul>
+            </li>
+        </ol>
+        <p>Une fois que vous avez complété cet exercice et êtes prêt, indiquez-le, et nous passerons au chapitre suivant.</p>                                            </div>
+                                                       </body>
+</html>
